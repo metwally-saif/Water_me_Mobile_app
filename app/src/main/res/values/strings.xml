@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Water Me</string>
+    <string name="title_home">Add Plant</string>
+    <string name="title_dashboard">Plants</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="plantphoto">plantPhoto</string>
+    <string name="select_interval">select interval</string>
+    <string name="plant_name">Plant Name</string>
+    <string name="add_plant_btn">Add Plant</string>
+</resources>
