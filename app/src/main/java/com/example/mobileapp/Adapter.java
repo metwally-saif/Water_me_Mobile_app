@@ -16,13 +16,11 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     private final LayoutInflater inflater;
-    private final Context context;
     private final ArrayList<Plant> data;
     private final PlantDatabaseHelper databaseHelper;
 
 
     public Adapter(Context context) {
-        this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.data = new ArrayList<>();
         this.databaseHelper = new PlantDatabaseHelper(context);
@@ -76,7 +74,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     public void onBindViewHolder(@NonNull @NotNull Adapter.ViewHolder viewHolder, int i) {
         Plant plant = data.get(i);
         viewHolder.plantName.setText(plant.PlantName());
-        viewHolder.timeForWatering.setText(plant.LastWatered());
+        viewHolder.timeForWatering.setText(plant.Interval());
+        viewHolder.label.setText("Interval: ");
     }
 
     @Override
@@ -86,12 +85,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView plantName, timeForWatering;
+        TextView plantName, timeForWatering, label;
 
         ViewHolder(View view) {
             super(view);
             plantName = view.findViewById(R.id.textView);
             timeForWatering = view.findViewById(R.id.textView2);
+            label = view.findViewById(R.id.textView3);
+
         }
     }
 }

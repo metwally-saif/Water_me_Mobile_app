@@ -3,13 +3,11 @@ package com.example.mobileapp;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.google.type.Date;
-import com.google.type.DateTime;
 
 public class PlantDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "plants.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Define table name and columns
     public static final String TABLE_PLANTS = "plants";

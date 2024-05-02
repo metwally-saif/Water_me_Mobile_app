@@ -7,4 +7,6 @@
     <string name="select_interval">select interval</string>
     <string name="plant_name">Plant Name</string>
     <string name="add_plant_btn">Add Plant</string>
+    <string name="time_left_to_water">Time left to water</string>
+    <string name="plant_namem">plant name</string>
 </resources>

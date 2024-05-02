@@ -3,6 +3,7 @@ package com.example.mobileapp;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder>{
     private final LayoutInflater inflater;
@@ -53,8 +58,38 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 String lastWatered = cursor.getString(cursor.getColumnIndexOrThrow(PlantDatabaseHelper.COLUMN_LAST_WATERED));
                 Plant plant = new ConcretePlant(name, interval, lastWatered);
                 plant.setId(id);
-                System.out.println(plant.LastWatered());
-                data.add(plant);
+
+                // Parse the lastWatered date string to a Date object
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+                Date lastWateredDate = null;
+                try {
+                    lastWateredDate = sdf.parse(lastWatered);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                // Get the current date
+                Date currentDate = new Date();
+
+                // log the last watered date
+                System.out.println(lastWateredDate.toString());
+
+                // Calculate the difference in days
+                long diff = currentDate.getTime() - lastWateredDate.getTime();
+                System.out.println(diff);
+                long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                System.out.println(diffDays);
+
+                // If the difference is greater than or equal to 1 day, add the plant to the data list
+                if (diffDays == 1) {
+                    data.add(plant);
+                }
+                else if (diffDays >= 2){
+                    plant.setLastWatered(new Date().toString());
+                    databaseHelper.updateWateredDate(plant);
+                }
+
+
             }
             cursor.close();
         }
@@ -76,7 +111,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
         viewHolder.plantName.setText(plant.PlantName());
+
         viewHolder.timeForWatering.setText(plant.LastWatered());
+        viewHolder.label.setText("Last Watered: ");
 
 
     }
@@ -88,12 +125,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView plantName, timeForWatering;
+        TextView plantName, timeForWatering, label;
 
         ViewHolder(View view) {
             super(view);
             plantName = view.findViewById(R.id.textView);
             timeForWatering = view.findViewById(R.id.textView2);
+            label = view.findViewById(R.id.textView3);
         }
     }
 }
